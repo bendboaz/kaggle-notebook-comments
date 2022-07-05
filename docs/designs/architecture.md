@@ -2,13 +2,16 @@
 
 #### Options
 
-- Sequence reordering: 
-    * input the cells as a time-series/hierarchical transformer, 
-    and learn the correct order of cells.
-    * Find the correct preceding cell(s) for each one - use Viterby/beam search for inference.
-      Find some way to leverage BERT's NSP objective.
+- Sequence reordering:
+    * Baseline: NSP on md-cells only, then infer (greedy/Viterby/beam).
+    * Cluster md cells to code cells, then order the inner groups.
 
-- Matching: Match each comment cell to the following code cell, 
-then reorder the preceding comment cells for each code cell
+- Greedy placing: Take all code cells, add markdown cells one by one.
 
-- Merging: First order the comment cells separately, then attempt to merge the two sequences.
+- Explicit position prediction: Put everything through the model, and learn to output 
+  the absolute position of each cell in the sequence.
+  
+- Use existing reordering algorithms:
+    * https://aclanthology.org/P19-1174.pdf
+    * https://proceedings.neurips.cc/paper/2021/hash/6f46dd176364ccec308c2760189a4605-Abstract.html
+    * https://aclanthology.org/W12-5906.pdf
