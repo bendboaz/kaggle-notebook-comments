@@ -15,6 +15,7 @@ class GTConfig(BaseSettings):
 class ExperimentSettings(BaseSettings):
     gt: GTConfig
     experiment_name: str
+    random_state: int = -1
 
     class Config:
         env_prefix = 'KAGGLE_NOTEBOOKS_'

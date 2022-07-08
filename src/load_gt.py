@@ -53,7 +53,7 @@ def load_gt_metadata() -> pd.DataFrame:
 def create_split_data(config: ExperimentSettings) -> Mapping[str, List[str]]:
     structured_data = load_gt_metadata()
     ancestries = structured_data[ANCESTOR_ID]
-    train_ancestries, val_ancestries = train_test_split(ancestries, test_size=config.gt.train_part)
+    train_ancestries, val_ancestries = train_test_split(ancestries, test_size=config.gt.train_part, random_state=config.random_state)
     return {
         'train': structured_data[structured_data[ANCESTOR_ID].isin(train_ancestries)].index.tolist(),
         'val': structured_data[structured_data[ANCESTOR_ID].isin(val_ancestries)].index.tolist(),
@@ -80,7 +80,7 @@ def get_split_data(config: ExperimentSettings):
 def split_gt(config: ExperimentSettings, gt_notebooks: List[Notebook], gt_metadata: pd.DataFrame) \
         -> Mapping[str, Tuple[List[Notebook], pd.DataFrame]]:
     split_data = get_split_data(config)
-    partitions = ['train', 'dev']
+    partitions = ['train', 'val']
     notebooks = {
         partition: list(filter(lambda nb: nb.notebook_id in split_data[partition], gt_notebooks))
         for partition in partitions
